@@ -1,6 +1,17 @@
 export class View {
   constructor() {
     this.app = document.getElementById('app');
+
+    // Контейнер для всего приложения
+    this.container = document.createElement('div');
+    this.container.classList.add('container');
+
+    // Заголовок "TODO"
+    this.header = document.createElement('h1');
+    this.header.textContent = 'TODO';
+    this.header.classList.add('header');
+
+    // Форма для добавления задач
     this.form = document.createElement('form');
     this.input = document.createElement('input');
     this.button = document.createElement('button');
@@ -8,7 +19,8 @@ export class View {
 
     this.button.textContent = 'Добавить';
     this.form.append(this.input, this.button);
-    this.app.append(this.form, this.list);
+    this.container.append(this.header, this.form, this.list);
+    this.app.append(this.container);
   }
 
   bindAddTodo(handler) {
