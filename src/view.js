@@ -23,14 +23,14 @@ export class View {
 
   bindDeleteTodo(handler) {
     this.list.addEventListener('click', event => {
-      if (event.target.type === 'checkbox') {
+      if (event.target.classList.contains('delete-btn')) {
         handler(event.target.dataset.index);
       }
     });
   }
 
   bindToggleTodo(handler) {
-    this.list.addEventListener('click', event => {
+    this.list.addEventListener('change', event => {
       if (event.target.type === 'checkbox') {
         handler(event.target.dataset.index);
       }
@@ -41,7 +41,6 @@ export class View {
     this.list.innerHTML = '';
     todos.forEach((todo, index) => {
       const li = document.createElement('li');
-      li.textContent = todo.text;
       li.dataset.index = index;
 
       // Создаем чекбокс для изменения состояния задачи
@@ -50,11 +49,24 @@ export class View {
       checkbox.dataset.index = index;
       checkbox.checked = todo.completed;
 
-      // Добавляем чекбокс слева от текста задачи
-      li.prepend(checkbox);
+      // Добавляем чекбокс в начало элемента списка
+      li.append(checkbox);
 
-      // Добавляем стиль, если задача выполнена
-      if (todo.completed) li.style.textDecoration = 'line-through';
+      // Добавляем текст задачи
+      const text = document.createElement('span');
+      text.textContent = todo.text;
+      if (todo.completed) {
+        text.style.textDecoration = 'line-through';
+        text.style.color = 'gray';
+      }
+      li.append(text);
+
+      // Кнопка для удаления задачи
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Удалить';
+      deleteBtn.classList.add('delete-btn');
+      deleteBtn.dataset.index = index;
+      li.append(deleteBtn);
 
       this.list.append(li);
     });
