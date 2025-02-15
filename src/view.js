@@ -23,7 +23,7 @@ export class View {
 
   bindDeleteTodo(handler) {
     this.list.addEventListener('click', event => {
-      if (event.target.tagName === 'BUTTON') {
+      if (event.target.type === 'checkbox') {
         handler(event.target.dataset.index);
       }
     });
@@ -31,7 +31,7 @@ export class View {
 
   bindToggleTodo(handler) {
     this.list.addEventListener('click', event => {
-      if (event.target.tagName === 'LI') {
+      if (event.target.type === 'checkbox') {
         handler(event.target.dataset.index);
       }
     });
@@ -43,11 +43,19 @@ export class View {
       const li = document.createElement('li');
       li.textContent = todo.text;
       li.dataset.index = index;
+
+      // Создаем чекбокс для изменения состояния задачи
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.dataset.index = index;
+      checkbox.checked = todo.completed;
+
+      // Добавляем чекбокс слева от текста задачи
+      li.prepend(checkbox);
+
+      // Добавляем стиль, если задача выполнена
       if (todo.completed) li.style.textDecoration = 'line-through';
-      const button = document.createElement('button');
-      button.textContent = 'Удалить';
-      button.dataset.index = index;
-      li.append(button);
+
       this.list.append(li);
     });
   }
